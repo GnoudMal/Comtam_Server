@@ -1,0 +1,240 @@
+<%- include('../inc/header.ejs') %>
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+              <i class="fas fa-bell"></i> Notifications <span class="badge badge-warning">4</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+              <i class="fas fa-info-circle"></i> Hỗ trợ <span class="badge badge-secondary">15</span>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user"></i> Mr. Admin
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="col-md-10 ml-sm-auto">
+    <div class="container mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 ">List product</h2>
+        <div class="search-form">
+          <form action="/search" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" name="query" placeholder="Search products...">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddCat">Add Category</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">Add Product</button>
+      </div>
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">Productname</th>
+            <th scope="col" class="text-center">Price</th>
+            <th scope="col" class="text-center">Image Product</th>
+            <th scope="col" class="text-center">Description</th>
+            <th scope="col" class="text-center">Category</th>
+            <th scope="col" class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(function(item,index) { %>
+            <tr>
+              <th scope="row">
+                <%= item.id %>
+              </th>
+              <td class="text-center">
+                <%= item.name %>
+              </td>
+              <td>
+                <%= item.price %> VND
+              </td>
+              <td class="text-center align-middle"><img src="<%= item.image_url %>" alt="Product Image" width="50px"
+                  height="50px"></td>
+              <td><span style="cursor: pointer;" data-toggle="modal" data-target="#descriptionModal<%= index %>">
+                  <%= item.description.length> 15 ? item.description.substring(0, 15) + '...' : item.description %>
+                </span></td>
+              <td>
+                <%= item.category %>
+              </td>
+              <td>
+                <button class="btn btn-warning" type="button" data-toggle="modal"
+                  data-target="#editModal<%= index %>">Sửa</button>
+                <form action="/products/delete/<%= item._id %>" method="POST" style="display: inline;">
+                  <button class="btn btn-danger" type="submit">Xóa</button>
+                </form>
+              </td>
+            </tr>
+
+            <div class="modal fade" id="descriptionModal<%= index %>" tabindex="-1" role="dialog"
+              aria-labelledby="descriptionModalLabel<%= index %>" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="descriptionModalLabel<%= index %>">Full Description</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <%= item.description %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Sửa -->
+            <div class="modal fade" id="editModal<%= index %>" tabindex="-1" role="dialog"
+              aria-labelledby="editModalLabel<%= index %>" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel<%= index %>">Edit product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/editProduct" method="post" enctype="multipart/form-data">
+                      <input type="hidden" name="productId" value="<%= item._id %>">
+                      <div class="mb-3">
+                        <label for="productname" class="form-label">Product Name:</label>
+                        <input type="text" class="form-control" id="productname" name="productname"
+                          value="<%= item.name %>">
+                      </div>
+                      <div class="mb-3">
+                        <label for="price" class="form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price" value="<%= item.price %>">
+                      </div>
+                      <div class="mb-3">
+                        <label for="imageproduct" class="form-label">Image Product:</label>
+                        <input type="file" class="form-control" id="imageproduct" name="imageproduct">
+                      </div>
+                      <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"
+                          rows="4"><%= item.description %></textarea>
+                      </div>
+                      <div class="mb-3">
+                        <label for="category" class="form-label">Category:</label>
+                        <input type="text" class="form-control" id="category" name="category"
+                          value="<%= item.category %>">
+                      </div>
+                      <button type="submit" class="btn btn-success">Save Changes</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <% }) %>
+        </tbody>
+      </table>
+
+      <!-- Modal Thêm -->
+      <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="addProductForm" action="/products/add" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="productname">Product Name:</label>
+                  <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                  <label for="price">Price:</label>
+                  <input type="number" class="form-control" id="price" name="price" required>
+                </div>
+                <div class="form-group">
+                  <label for="imageSource">Image Source:</label>
+                  <select id="imageSource" class="form-control" onchange="toggleImageInput()">
+                    <option value="file">From File</option>
+                    <option value="link">From Link</option>
+                  </select>
+                </div>
+                <div class="form-group" id="fileInputDiv">
+                  <label for="imageFile">Upload Image:</label>
+                  <input type="file" class="form-control" id="imageFile" name="imageproduct" accept="image/*">
+                </div>
+                <div class="form-group d-none" id="linkInputDiv">
+                  <label for="imageLink">Image Link:</label>
+                  <input type="url" class="form-control" id="imageLink" name="imageproduct"
+                    placeholder="Enter image URL">
+                </div>
+                <div class="form-group">
+                  <label for="category">Select Category</label>
+                  <select class="form-control" id="category" name="category">
+                    <% const categories=['Món Ăn', 'Đồ ăn thêm' , 'Topping' , 'Khác' ]; %>
+                      <% categories.forEach(function(cat) { %>
+                        <option value="<%= cat %>">
+                          <%= cat %>
+                        </option>
+                        <% }); %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Add Product</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleImageInput() {
+      const imageSource = document.getElementById("imageSource").value;
+      const fileInputDiv = document.getElementById("fileInputDiv");
+      const linkInputDiv = document.getElementById("linkInputDiv");
+
+      if (imageSource === "file") {
+        fileInputDiv.classList.remove("d-none");
+        linkInputDiv.classList.add("d-none");
+      } else {
+        fileInputDiv.classList.add("d-none");
+        linkInputDiv.classList.remove("d-none");
+      }
+    }
+  </script>
+
+  <%- include('../inc/footer.ejs') %>

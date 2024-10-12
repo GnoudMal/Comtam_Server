@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            padding-top: 1rem;
+            /* Giảm khoảng cách từ trên xuống */
+            background-color: #343a40;
+            /* Màu nền của sidebar */
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            color: #fff;
+            /* Màu chữ của logo */
+            text-decoration: none;
+            /* Xóa gạch chân của liên kết */
+        }
+
+        .sidebar-logo img {
+            width: 50px;
+            /* Kích thước logo */
+            height: 50px;
+            /* Chiều cao logo */
+            border-radius: 20%;
+            /* Bo tròn logo */
+            margin-right: 10px;
+            /* Khoảng cách giữa logo và tên */
+        }
+
+        .sidebar-sticky .nav-link {
+            color: #fff;
+            /* Màu chữ của các liên kết */
+        }
+
+        .sidebar-sticky .nav-link.active {
+            font-weight: bold;
+            /* Tăng đậm font của item đang active */
+        }
+
+        .sidebar-sticky .nav-link:hover,
+        .sidebar-sticky .nav-link:focus {
+            background-color: #fff;
+            /* Khi hover hoặc focus, background màu trắng */
+            color: #000;
+            /* Khi hover hoặc focus, chữ màu đen */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <a class="sidebar-logo" href="#">
+                    <img src="/images/logo_app.jpg" alt="Logo"> Cơm Tấm Tí Tỉ
+                </a>
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Trang Chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/listU">Danh sách người dùng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/listproducts">Danh sách sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/getOrder">Quản lí đơn hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/top10">Top 10 sản phẩm bán chạy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/totalRevenue">Doanh thu</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</body>
+
+</html>
